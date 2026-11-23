@@ -1,0 +1,119 @@
+#include<iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Book {
+public:
+    string title;
+    string author;
+    bool isBorrowed;
+
+    Book(string t, string a) {
+        title = t;
+        author = a;
+        isBorrowed = false;
+    }
+};
+
+int main() {
+    vector<Book> catalog;
+    int choice;
+
+    while (true) {
+        cout << "\n=== Library Management System ===" << endl;
+        cout << "1. Add Book" << endl;
+        cout << "2. Remove Book" << endl;
+        cout << "3. Borrow Book" << endl;
+        cout << "4. Return Book" << endl;
+        cout << "5. Search Book" << endl;
+        cout << "6. Display All Books" << endl;
+        cout << "7. Exit" << endl;
+        cout << "Choose an option: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            string t, a;
+            cout << "Enter book title: ";
+            cin.ignore();
+            getline(cin, t);
+            cout << "Enter author: ";
+            getline(cin, a);
+            catalog.push_back(Book(t, a));
+            cout << "Book \"" << t << "\" added." << endl;
+        } 
+        else if (choice == 2) {
+            string t;
+            cout << "Enter book title to remove: ";
+            cin.ignore();
+            getline(cin, t);
+            for (int i = 0; i < catalog.size(); i++) {
+                if (catalog[i].title == t) {
+                    catalog.erase(catalog.begin() + i);
+                    cout << "Book removed successfully." << endl;
+                    break;
+                }
+            }
+        } 
+        else if (choice == 3) {
+            string t;
+            cout << "Enter book title to borrow: ";
+            cin.ignore();
+            getline(cin, t);
+            bool found = false;
+            for (int i = 0; i < catalog.size(); i++) {
+                if (catalog[i].title == t) {
+                    found = true;
+                    if (!catalog[i].isBorrowed) {
+                        catalog[i].isBorrowed = true;
+                        cout << "\"" << t << "\" borrowed successfully." << endl;
+                    } else {
+                        cout << "Sorry, book is already borrowed." << endl;
+                    }
+                    break;
+                }
+            }
+            if (!found) cout << "Book not found." << endl;
+        } 
+        else if (choice == 4) {
+            string t;
+            cout << "Enter book title to return: ";
+            cin.ignore();
+            getline(cin, t);
+            for (int i = 0; i < catalog.size(); i++) {
+                if (catalog[i].title == t) {
+                    catalog[i].isBorrowed = false;
+                    cout << "\"" << t << "\" returned successfully." << endl;
+                    break;
+                }
+            }
+        } 
+        else if (choice == 5) {
+            string t;
+            cout << "Enter book title to search: ";
+            cin.ignore();
+            getline(cin, t);
+            bool found = false;
+            for (int i = 0; i < catalog.size(); i++) {
+                if (catalog[i].title == t) {
+                    cout << "Found: " << catalog[i].title << " by " << catalog[i].author << " | Status: " << (catalog[i].isBorrowed ? "Borrowed" : "Available") << endl;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) cout << "Book not found." << endl;
+        } 
+        else if (choice == 6) {
+            for (int i = 0; i < catalog.size(); i++) {
+                cout << "Title: " << catalog[i].title << " | Author: " << catalog[i].author << " | Status: " << (catalog[i].isBorrowed ? "Borrowed" : "Available") << endl;
+            }
+        } 
+        else if (choice == 7) {
+            cout << "Goodbye!" << endl;
+            break;
+        }
+    }
+
+    return 0;
+}
